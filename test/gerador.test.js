@@ -1,10 +1,17 @@
 const Gerador = require('../lib/gerador')
+const Schema = require('validate');
 const { toBeDeepCloseTo, toMatchCloseTo } = require('jest-matcher-deep-close-to');
 
 expect.extend({toBeDeepCloseTo, toMatchCloseTo});
 
 const gerador = new Gerador()
 
+const clienteSchema = new Schema({
+    nome: String,
+    salario: Number,
+    idade: Number,
+    valorDoEmprestimo: Number,
+})
 
 describe('Test Gerador Class', () => {
     test('faixa até 1000', () => {
@@ -14,6 +21,10 @@ describe('Test Gerador Class', () => {
             idade: 18,
             valorDoEmprestimo: 1000
         }
+
+        const errors = clienteSchema.validate(cliente);
+
+        expect(errors).toHaveLength(0);
 
         const { faixaIndex, propostas } = gerador.montarPropostas(cliente)
 
@@ -36,6 +47,10 @@ describe('Test Gerador Class', () => {
             idade: 20,
             valorDoEmprestimo: 4000
         }
+
+        const errors = clienteSchema.validate(cliente);
+
+        expect(errors).toHaveLength(0);
 
         const { faixaIndex, total, propostas } = gerador.montarPropostas(cliente)
 
@@ -62,6 +77,10 @@ describe('Test Gerador Class', () => {
             idade: 22,
             valorDoEmprestimo: 10000
         }
+        
+        const errors = clienteSchema.validate(cliente);
+
+        expect(errors).toHaveLength(0);
 
         const { faixaIndex, total, propostas } = gerador.montarPropostas(cliente)
 
