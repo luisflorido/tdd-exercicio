@@ -1,5 +1,10 @@
 const Gerador = require('../lib/gerador')
+const { toBeDeepCloseTo, toMatchCloseTo } = require('jest-matcher-deep-close-to');
+
+expect.extend({toBeDeepCloseTo, toMatchCloseTo});
+
 const gerador = new Gerador()
+
 
 describe('Test Gerador Class', () => {
     test('faixa até 1000', () => {
@@ -21,7 +26,7 @@ describe('Test Gerador Class', () => {
 
         expect(propostas[1].numParcelas).toBe(3);
         expect(propostas[1].total).toBe(2000);
-        expect(propostas[1].valorParcela).toBeCloseTo(666.67);
+        expect([propostas[1].valorParcela]).toBeDeepCloseTo([666.666], 3);
     })
 
     test('faixa de 1000,01 até 5000', () => {
